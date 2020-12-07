@@ -5,8 +5,8 @@ class ApiDay {
   final num dayLength;
 
   ApiDay.fromJson(Map<String, dynamic> json)
-      : sunrise = json["result"]['sunrise'],
-        sunset = json["result"]['sunset'],
-        solarNoon = json["result"]['solarNoon'],
-        dayLength = json["result"]['dayLength'];
+      : sunrise = json["results"]['sunrise'],
+        sunset = json["results"]['sunset'],
+        solarNoon = json["results"]['solar_noon'],
+        dayLength = json["results"]['day_length'];
 }

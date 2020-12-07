@@ -39,9 +39,12 @@ class _MyHomePageState extends State<MyHomePage> {
             child: BlocBuilder(
               cubit: _homeBloc,
               builder: (context, state) {
-                if (state is! LoadStarted) {
+                if (state is LoadStarted) {
                   return CircularProgressIndicator();
-                } else
+                } else if (state is LoadComplete || state is HomeInitial) {
+                  if (state is LoadComplete) {
+                    _day = state.day;
+                  }
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -69,14 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       SizedBox(
                         height: 20,
                       ),
-                      RaisedButton(
-                          child: Text('Получить'),
-                          onPressed: () {
-                            _homeBloc.add(LoadStarted(
-                              double.tryParse(_latController.text),
-                              double.tryParse(_lngController.text),
-                            ));
-                          }),
+                      RaisedButton(child: Text('Получить'), onPressed: _getDay),
                       SizedBox(
                         height: 20,
                       ),
@@ -93,11 +89,21 @@ class _MyHomePageState extends State<MyHomePage> {
                         )
                     ],
                   );
+                }
+                return SizedBox();
               },
             ),
           ))
           // This trailing comma makes auto-formatting nicer for build methods.
           ),
     );
+  }
+
+  void _getDay() {
+    print("get Day pressed");
+    _homeBloc.add(LoadStarted(
+      double.tryParse(_latController.text),
+      double.tryParse(_lngController.text),
+    ));
   }
 }
