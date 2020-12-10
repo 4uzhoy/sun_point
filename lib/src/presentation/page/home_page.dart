@@ -16,7 +16,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final _latController = TextEditingController();
   final _lngController = TextEditingController();
-  HomeBloc _homeBloc;
+  HomeBloc2BLoC _homeBloc;
   Day _day;
 
   @override
@@ -39,58 +39,11 @@ class _MyHomePageState extends State<MyHomePage> {
             child: BlocBuilder(
               cubit: _homeBloc,
               builder: (context, state) {
-                if (state is LoadStarted) {
-                  return CircularProgressIndicator();
-                } else if (state is LoadComplete || state is HomeInitial) {
-                  if (state is LoadComplete) {
-                    _day = state.day;
-                  }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                              child: TextField(
-                            controller: _latController,
-                            keyboardType: TextInputType.numberWithOptions(
-                                decimal: true, signed: true),
-                            decoration: InputDecoration(hintText: 'Широта'),
-                          )),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Expanded(
-                              child: TextField(
-                            controller: _lngController,
-                            keyboardType: TextInputType.numberWithOptions(
-                                decimal: true, signed: true),
-                            decoration: InputDecoration(hintText: 'Долгота'),
-                          ))
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      RaisedButton(child: Text('Получить'), onPressed: _getDay),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      if (_day != null)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text('Восход: ${_day.sunrise.toLocal()}'),
-                            Text('Заход: ${_day.sunset.toLocal()}'),
-                            Text('Полдень: ${_day.solarNoon.toLocal()}'),
-                            Text(
-                                'Продолжительность: ${Duration(seconds: _day.dayLength)}'),
-                          ],
-                        )
-                    ],
-                  );
-                }
-                return SizedBox();
+                return state.when<Widget>(
+                    initial: () => _complete(null),
+                    loading: (double progress) => CircularProgressIndicator(),
+                    complete: (data) => _complete(data));
+                return Text('$state');
               },
             ),
           ))
@@ -99,11 +52,52 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Widget _complete(Day day) =>
+      Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Row(
+          children: [
+            Expanded(
+                child: TextField(
+              controller: _latController,
+              keyboardType:
+                  TextInputType.numberWithOptions(decimal: true, signed: true),
+              decoration: InputDecoration(hintText: 'Широта'),
+            )),
+            SizedBox(
+              width: 20,
+            ),
+            Expanded(
+                child: TextField(
+              controller: _lngController,
+              keyboardType:
+                  TextInputType.numberWithOptions(decimal: true, signed: true),
+              decoration: InputDecoration(hintText: 'Долгота'),
+            ))
+          ],
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        RaisedButton(child: Text('Получить'), onPressed: _getDay),
+        SizedBox(
+          height: 20,
+        ),
+        if (day != null)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text('Восход: ${day.sunrise.toLocal()}'),
+              Text('Заход: ${day.sunset.toLocal()}'),
+              Text('Полдень: ${day.solarNoon.toLocal()}'),
+              Text('Продолжительность: ${Duration(seconds: day.dayLength)}'),
+            ],
+          )
+      ]);
+
   void _getDay() {
     print("get Day pressed");
-    _homeBloc.add(LoadStarted(
-      double.tryParse(_latController.text),
-      double.tryParse(_lngController.text),
-    ));
+    _homeBloc.add(LoadStartedHome(
+        latitude: double.tryParse(_latController.text),
+        longitude: double.tryParse(_lngController.text)));
   }
 }
