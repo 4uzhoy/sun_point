@@ -1,0 +1,1 @@
+ping mail.ru -t
