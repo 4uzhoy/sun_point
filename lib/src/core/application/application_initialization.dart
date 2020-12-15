@@ -29,7 +29,6 @@ class _ApplicationInitializationState extends State<ApplicationInitialization> {
 
   @override
   Widget build(BuildContext context) {
-    Element
     return BlocProvider<SunPointBLoC>(
         create: (BuildContext context) => SunPointBLoC(
             getDay: GetDay(DayRepositoryImplementation(
