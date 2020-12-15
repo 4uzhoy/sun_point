@@ -9,8 +9,8 @@ abstract class DayModel with _$DayModel {
   const factory DayModel(
       {@required DateTime sunrise,
       @required DateTime sunset,
-      @required DateTime solarNoon,
-      @required int dayLength}) = Data;
+      @required @JsonKey(name: 'solar_noon') DateTime solarNoon,
+      @required @JsonKey(name: 'day_length') int dayLength}) = DayModelData;
   factory DayModel.fromJson(Map<String, Object> json) =>
       _$DayModelFromJson(json);
 }

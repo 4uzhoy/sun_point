@@ -1,4 +1,4 @@
-import 'package:sun_point/src/features/sun_point/data/models/day_model.dart';
+import 'package:sun_point/src/features/sun_point/data/models/day_model/day_model.dart';
 
 abstract class DayLocalDataSource {
   Future<DayModel> getCachedDay();

@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sun_point/src/core/error/server_exception.dart';
-import 'package:sun_point/src/features/sun_point/data/models/day_model.dart';
+import 'package:sun_point/src/features/sun_point/data/models/base_response_model/base_response_model.dart';
+import 'package:sun_point/src/features/sun_point/data/models/day_model/day_model.dart';
 
 abstract class DayRemoteDataSource {
   Future<DayModel> getDay(double lat, double lon);
@@ -21,9 +22,9 @@ class DayRemoteDataSourceImpl implements DayRemoteDataSource {
         'lng': lon,
         'formatted': 0,
       });
-
+      print(_response.data.toString());
       if (_response.statusCode == 200) {
-        return DayModel.fromJson(_response.data);
+        return BaseResponseModel.fromJson(_response.data).dayModel;
       } else {
         throw ServerException(_response.statusMessage.toString());
       }

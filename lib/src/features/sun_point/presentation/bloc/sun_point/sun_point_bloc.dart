@@ -50,7 +50,7 @@ class SunPointBLoC extends Bloc<SunPointEvent, SunPointState> {
       final Day _day = await getDay.call(Params(lat: lt, lon: lg));
       yield CompleteSunPointState(_day);
     } catch (e, st) {
-      debugPrint(e);
+      debugPrint(e.toString());
       debugPrint(st.toString());
       yield FailureSunPointState();
     }

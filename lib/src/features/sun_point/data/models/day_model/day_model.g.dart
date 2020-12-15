@@ -6,24 +6,25 @@ part of 'day_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$Data _$_$DataFromJson(Map<String, dynamic> json) {
-  return _$Data(
+_$DayModelData _$_$DayModelDataFromJson(Map<String, dynamic> json) {
+  return _$DayModelData(
     sunrise: json['sunrise'] == null
         ? null
         : DateTime.parse(json['sunrise'] as String),
     sunset: json['sunset'] == null
         ? null
         : DateTime.parse(json['sunset'] as String),
-    solarNoon: json['solarNoon'] == null
+    solarNoon: json['solar_noon'] == null
         ? null
-        : DateTime.parse(json['solarNoon'] as String),
-    dayLength: json['dayLength'] as int,
+        : DateTime.parse(json['solar_noon'] as String),
+    dayLength: json['day_length'] as int,
   );
 }
 
-Map<String, dynamic> _$_$DataToJson(_$Data instance) => <String, dynamic>{
+Map<String, dynamic> _$_$DayModelDataToJson(_$DayModelData instance) =>
+    <String, dynamic>{
       'sunrise': instance.sunrise?.toIso8601String(),
       'sunset': instance.sunset?.toIso8601String(),
-      'solarNoon': instance.solarNoon?.toIso8601String(),
-      'dayLength': instance.dayLength,
+      'solar_noon': instance.solarNoon?.toIso8601String(),
+      'day_length': instance.dayLength,
     };
