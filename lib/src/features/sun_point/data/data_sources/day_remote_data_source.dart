@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sun_point/src/core/error/server_exception.dart';
@@ -25,11 +23,13 @@ class DayRemoteDataSourceImpl implements DayRemoteDataSource {
       });
 
       if (_response.statusCode == 200) {
-        return DayModel.fromJson(json.decode(_response.data));
+        return DayModel.fromJson(_response.data);
       } else {
         throw ServerException(_response.statusMessage.toString());
       }
-    } on dynamic {
+    } catch (e, st) {
+      print(e.toString());
+      print(st.toString());
       rethrow;
     }
   }
